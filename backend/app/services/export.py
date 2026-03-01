@@ -1,0 +1,169 @@
+import os
+import logging
+from jinja2 import Environment, FileSystemLoader
+from typing import Dict, Any
+from app.core.config import settings
+import uuid
+
+logger = logging.getLogger(__name__)
+
+try:
+    from weasyprint import HTML, CSS
+    WEASYPRINT_AVAILABLE = True
+except (ImportError, OSError):
+    logger.warning("WeasyPrint could not be loaded. Operating in HTML-only mock mode for PDF generation.")
+    WEASYPRINT_AVAILABLE = False
+
+class ReportGenerator:
+    def __init__(self):
+        # We assume templates are stored in backend/app/templates/
+        self.template_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "templates")
+        os.makedirs(self.template_dir, exist_ok=True)
+        self.env = Environment(loader=FileSystemLoader(self.template_dir))
+        self._ensure_template_exists()
+
+    def _ensure_template_exists(self):
+        """Creates a default Jinja html template if lacking."""
+        template_path = os.path.join(self.template_dir, "report.html")
+        if not os.path.exists(template_path):
+            with open(template_path, "w", encoding='utf-8') as f:
+                f.write("""
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>QUEUEZERO Primary Assessment</title>
+    <style>
+        @page { size: A4; margin: 2cm; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; background: #fff; }
+        .header { border-bottom: 2px solid #005f73; padding-bottom: 10px; margin-bottom: 30px; }
+        .title { color: #005f73; font-size: 24px; font-weight: bold; margin: 0; }
+        .subtitle { color: #0a9396; font-size: 14px; margin-top: 5px; }
+        .disclaimer { color: #ae2012; font-size: 10px; font-weight: bold; text-align: right; float: right; width: 40%; }
+        
+        .section-title { background: #e9ecef; padding: 8px; border-left: 4px solid #005f73; margin-top: 30px; font-size: 16px; font-weight: bold; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
+        th, td { border: 1px solid #dee2e6; padding: 8px; text-align: left; }
+        th { background-color: #f8f9fa; color: #495057; }
+        tr:nth-child(even) { background-color: #fcfcfc; }
+        .flag-warning { color: #ee9b00; font-weight: bold; }
+        
+        .notes-list { font-size: 12px; margin-top: 10px; }
+        .notes-list li { margin-bottom: 4px; }
+        
+        .footer { position: fixed; bottom: 0; width: 100%; text-align: center; font-size: 10px; color: #adb5bd; border-top: 1px solid #dee2e6; padding-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="disclaimer">
+            Preliminary biomechanical screening assessment — to be interpreted exclusively by a licensed clinician. Not a diagnostic tool.
+        </div>
+        <h1 class="title">QUEUEZERO™</h1>
+        <div class="subtitle">Primary Assessment Patient Card</div>
+    </div>
+
+    <div style="font-size: 12px; display: grid; gap: 10px; margin-bottom: 20px;">
+        <p><strong>Patient:</strong> {{ patient.first_name }} {{ patient.last_name }} | <strong>MRN:</strong> {{ patient.mrn }}</p>
+        <p><strong>Demographics:</strong> {{ patient.age }}yo {{ patient.sex }} | <strong>BMI:</strong> {{ patient.bmi }}</p>
+        <p><strong>Context Engine Note:</strong> Occupation: {{ patient.occupation }}</p>
+        <p><strong>Date of Scan:</strong> {{ date_of_scan }}</p>
+    </div>
+
+    <!-- Optional Vitals -->
+    {% if vitals.heart_rate_bpm %}
+    <div class="section-title">Primary Vitals (Baseline)</div>
+    <table>
+        <tr>
+            <th>Heart Rate</th>
+            <th>Blood Pressure</th>
+            <th>Resp. Rate</th>
+        </tr>
+        <tr>
+            <td>{{ vitals.heart_rate_bpm }} bpm</td>
+            <td>{{ vitals.blood_pressure_sys }}/{{ vitals.blood_pressure_dia }} mmHg</td>
+            <td>{{ vitals.respiratory_rate }} /min</td>
+        </tr>
+    </table>
+    {% endif %}
+
+    <div class="section-title">Full-Body ROM Summary Table</div>
+    <table>
+        <tr>
+            <th>Joint / Motion</th>
+            <th>Patient ROM</th>
+            <th>Normative Range</th>
+            <th>Symmetry Match</th>
+            <th>Flag</th>
+        </tr>
+        {% for row in rom_results %}
+        <tr>
+            <td>{{ row.joint }}</td>
+            <td>{{ row.patient_rom }}</td>
+            <td>{{ row.normative }}</td>
+            <td>{{ row.symmetry }}</td>
+            <td class="{% if 'Restricted' in row.flag %}flag-warning{% endif %}">{{ row.flag }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="section-title">Movement Quality & Compensation Notes</div>
+    <ul class="notes-list">
+        {% for note in compensation_notes %}
+        <li>{{ note }}</li>
+        {% else %}
+        <li>Tracking fidelity normal. No major compensations observed.</li>
+        {% endfor %}
+    </ul>
+
+    <div class="section-title">Probabilistic Muscle/Joint Stress Indicators</div>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Probability Match</th>
+            <th>Context Note</th>
+        </tr>
+        {% for risk in risk_indicators %}
+        <tr>
+            <td>{{ risk.category }}</td>
+            <td><strong>{{ risk.probability }}</strong></td>
+            <td>{{ risk.context_note }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div style="margin-top: 30px; font-size: 12px; color: #495057;">
+        <strong>System Confidence Score (Tracking Fidelity):</strong> {{ confidence_score }}%
+    </div>
+
+    <div class="footer">
+        Generated by PhysioMimica Engine - QUEUEZERO™ Point-of-Care Waitlist Assessment
+    </div>
+
+</body>
+</html>
+""")
+
+    def generate_pdf(self, template_data: Dict[str, Any]) -> str:
+        """Render HTML from Jinja2 template and convert to PDF or fallback to HTML."""
+        template = self.env.get_template("report.html")
+        html_out = template.render(template_data)
+        
+        filename_base = f"PatientCard_{uuid.uuid4().hex[:8]}"
+        
+        if WEASYPRINT_AVAILABLE:
+            filename = f"{filename_base}.pdf"
+            filepath = os.path.join(settings.REPORTS_DIR, filename)
+            HTML(string=html_out).write_pdf(filepath)
+        else:
+            filename = f"{filename_base}_mock.html"
+            filepath = os.path.join(settings.REPORTS_DIR, filename)
+            with open(filepath, "w", encoding='utf-8') as f:
+                f.write(html_out)
+            logger.info(f"Mock generated HTML at {filepath}")
+            
+        return filepath
+
+report_generator = ReportGenerator()
