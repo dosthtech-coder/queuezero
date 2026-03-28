@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index of References – RVMI Project</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0B1628;
+            --navy: #122144;
+            --navy2: #1C3462;
+            --teal: #077A7D;
+            --teal2: #0CA4A8;
+            --gold: #B8860B;
+            --gold2: #E8AD1A;
+            --cream: #F7F5F0;
+            --white: #FFFFFF;
+            --g1: #F1F3F8;
+            --g2: #DDE2EE;
+            --g3: #8E98B0;
+            --r: 8px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            color: var(--ink);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--cream);
+            border-radius: var(--r);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(130deg, var(--navy), var(--navy2));
+            padding: 40px 30px;
+            color: var(--white);
+            position: relative;
+            border-bottom: 4px solid var(--gold2);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--gold2), var(--teal2), var(--gold2), var(--teal2));
+        }
+
+        .supertitle {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gold2);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 36px;
+            line-height: 1.1;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+        }
+
+        em {
+            color: #C5ECED;
+            font-style: normal;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .ref-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .ref-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--g2);
+        }
+
+        .ref-item:last-child {
+            border-bottom: none;
+        }
+
+        .ref-number {
+            font-family: 'Crimson Pro', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--teal);
+            width: 30px;
+            flex-shrink: 0;
+            text-align: right;
+            padding-top: 2px;
+        }
+
+        .ref-text {
+            font-size: 14px;
+            color: #2a3352;
+            line-height: 1.6;
+        }
+
+        .ref-text strong {
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+        .ref-text i {
+            color: var(--navy2);
+        }
+
+        .ref-links {
+            margin-top: 6px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .ext-link {
+            display: inline-flex;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--white);
+            background: var(--teal);
+            padding: 4px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .ext-link:hover {
+            background: var(--navy2);
+        }
+
+        .ext-link.pmid {
+            background: var(--gold);
+            color: var(--white);
+        }
+
+        .ext-link.pmid:hover {
+            background: var(--gold2);
+            color: var(--navy);
+        }
+
+        .footer {
+            background: var(--ink);
+            padding: 20px 30px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer a {
+            color: var(--gold2);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media(max-width: 600px) {
+            .header { padding: 30px 20px; }
+            .content { padding: 30px 20px; }
+            .title { font-size: 28px; }
+            .footer { flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="supertitle">Supplementary Appendix</div>
+        <h1 class="title">Index of References</h1>
+        <div class="subtitle">Companion references for the <em>RVMI</em> (Removable Vibratory Mesh Interface) E-Poster Presentation. World Congress on Hand Rehabilitation.</div>
+    </div>
+    
+    <div class="content">
+        <ul class="ref-list">
+            
+            <li class="ref-item">
+                <div class="ref-number">1.</div>
+                <div class="ref-text">
+                    <strong>Melzack R, Wall PD.</strong> Pain mechanisms: a new theory. <em>Science</em>. 1965 Nov 19;150(3699):971–9.
+                    <div class="ref-links">
+                        <a href="https://doi.org/10.1126/science.150.3699.971" class="ext-link" target="_blank">DOI: 10.1126/science.150.3699.971</a>
+                        <a href="https://pubmed.ncbi.nlm.nih.gov/5320816/" class="ext-link pmid" target="_blank">PMID: 5320816</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="ref-item">
+                <div class="ref-number">2.</div>
+                <div class="ref-text">
+                    <strong>Lohman EB 3rd, Petrofsky JS, Maloney-Hinds C, Betts-Schwab H, Thorpe D.</strong> The effect of whole body vibration on lower extremity skin blood flow in normal subjects. <em>Med Sci Monit</em>. 2007 Feb;13(2):CR71–6.
+                    <div class="ref-links">
+                        <a href="https://pubmed.ncbi.nlm.nih.gov/17261985/" class="ext-link pmid" target="_blank">PMID: 17261985</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="ref-item">
+                <div class="ref-number">3.</div>
+                <div class="ref-text">
+                    <strong>Lohman EB 3rd, Sackiriyas KSB, Bains GS, Calandra G, Lobo C, Nakhro D, Malthankar G, Paul S.</strong> A comparison of whole body vibration and moist heat on lower extremity skin temperature and skin blood flow in healthy older individuals. <em>Med Sci Monit</em>. 2012 Jul;18(7):CR415–24.
+                    <div class="ref-links">
+                        <a href="https://doi.org/10.12659/MSM.883209" class="ext-link" target="_blank">DOI: 10.12659/MSM.883209</a>
+                        <a href="https://pubmed.ncbi.nlm.nih.gov/22739731/" class="ext-link pmid" target="_blank">PMID: 22739731</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="ref-item">
+                <div class="ref-number">4.</div>
+                <div class="ref-text">
+                    <strong>Games KE, Sefton JM, Wilson AE.</strong> Whole-body vibration and blood flow and muscle oxygenation: a meta-analysis. <em>J Athl Train</em>. 2015 May;50(5):542–9.
+                    <div class="ref-links">
+                        <a href="https://doi.org/10.4085/1062-6050-50.2.09" class="ext-link" target="_blank">DOI: 10.4085/1062-6050-50.2.09</a>
+                        <a href="https://pubmed.ncbi.nlm.nih.gov/25974682/" class="ext-link pmid" target="_blank">PMID: 25974682</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="ref-item">
+                <div class="ref-number">5.</div>
+                <div class="ref-text">
+                    <strong>Schneider R.</strong> Low-frequency vibrotherapy considerably improves the effectiveness of manual lymphatic drainage (MLD) in patients with lipedema: a two-armed, randomized, controlled pragmatic trial. <em>Physiother Theory Pract</em>. 2020;36(1):63–70.
+                    <div class="ref-links">
+                        <a href="https://doi.org/10.1080/09593985.2018.1469145" class="ext-link" target="_blank">DOI: 10.1080/09593985.2018.1469145</a>
+                        <a href="https://pubmed.ncbi.nlm.nih.gov/29847188/" class="ext-link pmid" target="_blank">PMID: 29847188</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="ref-item">
+                <div class="ref-number">6.</div>
+                <div class="ref-text">
+                    <strong>Pastouret F, Cardozo L, Lamote J, Buyl R, Lievens P.</strong> Effects of multidirectional vibrations delivered in a horizontal position (Andullation®) on blood microcirculation in laboratory animals: a preliminary study. <em>Med Sci Monit Basic Res</em>. 2016 Oct 14;22:115–122.
+                    <div class="ref-links">
+                        <a href="https://doi.org/10.12659/MSMBR.900654" class="ext-link" target="_blank">DOI: 10.12659/MSMBR.900654</a>
+                        <a href="https://pubmed.ncbi.nlm.nih.gov/27739419/" class="ext-link pmid" target="_blank">PMID: 27739419</a>
+                    </div>
+                </div>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="footer">
+        <div>© 2026 Arjun Jayesh · RVMI Project</div>
+        <div><a href="RVMI_ePoster_v2.html">← Back to E-Poster</a></div>
+    </div>
+</div>
+
+</body>
+</html>
